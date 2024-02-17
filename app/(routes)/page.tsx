@@ -17,7 +17,7 @@ const HomePage = async () => {
       <Container>
         <div className="image-container  p-4 sm:p-6 lg:p-8 rounded-xl overflow-hidden">
           <div className="featured  rounded-xl relative aspect-square md:aspect-[2.4/1] overflow-hidden bg-cover">
-            <p>EXPLORA NUESTROS PRODUCTOS DESTACADOS!</p>
+            <p>EXPLORA TODOS NUESTROS PRODUCTOS!</p>
           </div>
         </div>
         <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
