@@ -46,6 +46,9 @@ function Nosotros() {
   return (
     <div id="nosotros" className="nos-container">
       <div className="fila">
+        <motion.div {...imageVariants} className="imagen">
+          <Image alt="" src={Nos}></Image>
+        </motion.div>
         <div className="texto">
           <motion.h2 {...tittleVariants}>Acerca de mí</motion.h2>
           <motion.div className="line" {...lineVariants}></motion.div>
@@ -59,9 +62,6 @@ function Nosotros() {
             reprehenderit a.
           </motion.p>
         </div>
-        <motion.div {...imageVariants} className="imagen">
-          <Image alt="" src={Nos}></Image>
-        </motion.div>
       </div>
     </div>
   );

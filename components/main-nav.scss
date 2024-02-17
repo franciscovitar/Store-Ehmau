@@ -10,5 +10,10 @@ nav {
             text-decoration-thickness: 0.1em;
         }
 
+        @media (max-width: 500px) {
+            flex-direction: column;
+            font-size: 12px;
+        }
+
     }
 }

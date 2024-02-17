@@ -14,19 +14,19 @@
             font-weight: bold;
             font-size: 20px;
             cursor: pointer;
-        }
 
-        .izq {
-
-            // margin-left: 20px;
-
-            img {
-                width: 150px;
+            @media (max-width: 500px) {
+                width: 90px;
+                font-size: 16px;
             }
         }
 
         .med {
             margin-right: 40px;
+
+            @media (max-width: 500px) {
+                margin-right: 0;
+            }
         }
 
     }
