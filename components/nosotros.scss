@@ -11,10 +11,15 @@
         width: 70%;
         margin: auto;
 
+        @media (max-width: 1500px) {
+            width: 85%;
+        }
+
 
         @media (max-width: 900px) {
             flex-direction: column;
             padding: 0 10px;
+            width: 90%;
         }
 
         .imagen {

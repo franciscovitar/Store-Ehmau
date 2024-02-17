@@ -41,6 +41,10 @@
             height: 100%;
             content: " ";
             z-index: 2;
+
+            @media (max-width: 500px) {
+                width: 50px;
+            }
         }
 
         &:before {
