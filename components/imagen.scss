@@ -1,0 +1,71 @@
+@keyframes scroll {
+    from {
+        transform: translateX(0)
+    }
+
+    to {
+        transform: translateX(-100%)
+    }
+}
+
+.contenedor-principal-demo2 {
+    margin-top: 200px;
+    background-image: url('../public/imagen1.jpg');
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: inset 0 0 0 1000px #000000a5;
+
+
+    @supports (-webkit-touch-callout: none) {
+        background-attachment: scroll;
+    }
+
+    @supports not (-webkit-touch-callout: none) {
+        background-attachment: fixed;
+    }
+
+
+
+    .contenedor-secundario {
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 100px 0;
+        position: relative;
+
+        &:before,
+        &:after {
+            position: absolute;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            content: " ";
+            z-index: 2;
+        }
+
+        &:before {
+            left: 0;
+            background: linear-gradient(to left, transparent, rgb(0, 0, 0));
+        }
+
+        &:after {
+            right: 0;
+            background: linear-gradient(to right, transparent, rgb(0, 0, 0));
+        }
+
+        .tercero {
+            display: inline-block;
+            animation: 35s scroll infinite linear;
+
+            span {
+                margin-left: 200px;
+                width: 100%;
+                color: #fff;
+                font-size: 24px;
+                font-weight: 700;
+                text-align: center;
+            }
+        }
+
+    }
+}

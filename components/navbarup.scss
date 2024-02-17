@@ -1,0 +1,14 @@
+.navup {
+    background-color: rgb(246, 246, 246);
+    padding: 20px 0;
+
+    display: flex;
+    justify-content: center;
+
+    img {
+        margin-left: 20px;
+        width: 240px;
+        height: 70px;
+        object-fit: cover;
+    }
+}

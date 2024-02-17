@@ -1,0 +1,25 @@
+form {
+    display: flex;
+    flex-direction: column;
+
+    label {
+        margin: 10px 0;
+
+        p {
+            font-weight: 500;
+        }
+    }
+
+    input {
+        border: solid 1px #c9c9c9;
+        border-radius: 9px;
+        text-decoration: none;
+        padding: 5px;
+        outline: none;
+
+        &::placeholder {
+            font-weight: 400;
+            color: #b0b0b0;
+        }
+    }
+}
