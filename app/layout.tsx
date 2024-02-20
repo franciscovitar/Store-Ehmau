@@ -5,8 +5,10 @@ import ToastProvider from "@/providers/toast-provider";
 import RenderNav from "../components/rendervab";
 import Footer from "@/components/footer";
 import "bootstrap-icons/font/bootstrap-icons.css";
+import "react-tooltip/dist/react-tooltip.css";
 
 import "./globals.css";
+import Contacto from "@/components/Contacto";
 
 const font = Roboto({
   subsets: ["latin"],
@@ -30,6 +32,7 @@ export default function RootLayout({
         <ModalProvider />
         <RenderNav />
         {children}
+        <Contacto />
         <Footer />
       </body>
     </html>

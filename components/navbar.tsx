@@ -9,6 +9,10 @@ import { useState } from "react";
 import "./navbar.scss";
 import Link from "next/link";
 
+import Surtown from "../public/logonavbar-removebg-preview.png";
+import Ehmau from "../public/navbarlogo.png";
+import Image from "next/image";
+
 interface NavbarProps {
   categories: Category[]; // Cambia esto al tipo real de tus categorías
 }
@@ -16,20 +20,24 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ categories }) => {
   const [marca, setMarca] = useState("surtown");
 
-  const handleClick = () => {
-    setMarca(marca === "surtown" ? "ehmau" : "surtown");
+  const imageSrc = marca === "surtown" ? Surtown : Ehmau;
+
+  const sur = () => {
+    setMarca("surtown");
+  };
+
+  const ehm = () => {
+    setMarca("ehmau");
   };
 
   return (
     <>
-      <NavBarUp marca={marca} handleClick={handleClick} />
+      <NavBarUp marca={marca} sur={sur} ehm={ehm} />
       <div className="nav border-b">
         <Container>
           <div className="nav1">
             <Link href={"/"}>
-              <h3 onClick={handleClick}>
-                Ir a {marca === "surtown" ? "ehmau" : "surtown"}
-              </h3>
+              <Image alt="" src={imageSrc} />
             </Link>
 
             <div className="med">

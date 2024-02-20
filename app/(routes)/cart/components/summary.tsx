@@ -18,21 +18,21 @@ const Summary = () => {
   const searchParams = useSearchParams();
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
-  const [preferenceId, setPreferenceId] = useState(null);
-  const memoizedSearchParams = useMemo(() => searchParams, [searchParams]);
-  const memoizedRemoveAll = useMemo(() => removeAll, [removeAll]);
+  // const [preferenceId, setPreferenceId] = useState(null);
+  // const memoizedSearchParams = useMemo(() => searchParams, [searchParams]);
+  // const memoizedRemoveAll = useMemo(() => removeAll, [removeAll]);
+  const [pagado, setPagado] = useState(false);
 
-  useEffect(() => {
-    if (searchParams.get("success")) {
-      toast.success("Pago completado.");
-      memoizedRemoveAll();
-      onCheckout();
-    }
+  // useEffect(() => {
+  //   if (searchParams.get("success")) {
+  //     toast.success("Pago completado.");
+  //     memoizedRemoveAll();
+  //   }
 
-    if (searchParams.get("canceled")) {
-      toast.error("Algo salió mal.");
-    }
-  }, [memoizedSearchParams, memoizedRemoveAll]);
+  //   if (searchParams.get("canceled")) {
+  //     toast.error("Algo salió mal.");
+  //   }
+  // }, [memoizedSearchParams, memoizedRemoveAll]);
 
   const handleDireccionChange = (event: any) => {
     setDireccion(event.target.value);
@@ -44,36 +44,36 @@ const Summary = () => {
     setTelefono(value.replace(/\D/g, ""));
   };
 
-  initMercadoPago("TEST-66a50373-c6b4-4da8-af68-8ed9223c8a4d", {
-    locale: "es-AR",
-  });
+  // initMercadoPago("TEST-66a50373-c6b4-4da8-af68-8ed9223c8a4d", {
+  //   locale: "es-AR",
+  // });
 
-  const createPreference = async () => {
-    try {
-      const response = await axios.post(
-        `http://localhost:3042/create_preference`,
-        {
-          title: "Importa Madero",
-          quantity: 1,
-          price: Number(totalPrice),
-        }
-      );
+  // const createPreference = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       `http://localhost:3042/create_preference`,
+  //       {
+  //         title: "Importa Madero",
+  //         quantity: 1,
+  //         price: Number(totalPrice),
+  //       }
+  //     );
 
-      const { id } = response.data;
+  //     const { id } = response.data;
 
-      return id;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     return id;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const handleBuy = async () => {
-    const id = await createPreference();
+  // const handleBuy = async () => {
+  //   const id = await createPreference();
 
-    if (id) {
-      setPreferenceId(id);
-    }
-  };
+  //   if (id) {
+  //     setPreferenceId(id);
+  //   }
+  // };
 
   const onCheckout = async () => {
     const response = await axios.post(
@@ -97,7 +97,16 @@ const Summary = () => {
       toast.error("Por favor completa todos los campos requeridos.");
       return;
     }
-    handleBuy();
+    onCheckout();
+    setPagado(true);
+  };
+
+  const listo = () => {
+    toast.success("Pago completado.");
+    removeAll();
+    setDireccion("");
+    setTelefono("");
+    setPagado(false);
   };
 
   return (
@@ -129,16 +138,33 @@ const Summary = () => {
           onChange={handleTelefonoChange}
         />
       </form>
-      {preferenceId ? (
-        <a onClick={onCheckout}>
-          <Wallet
-            initialization={{
-              preferenceId: preferenceId,
-              redirectMode: "blank",
-            }}
-          />
-        </a>
+      {/* {preferenceId ? (
+        <Wallet
+          initialization={{
+            preferenceId: preferenceId,
+            redirectMode: "blank",
+          }}
+        />
       ) : (
+        
+      )} */}
+
+      <div className={pagado ? "visto cvu" : "oculto"}>
+        <h3>
+          Transferir a:<p>4324234324234342</p>{" "}
+        </h3>
+        <h3>
+          Enviar comprobante a:{" "}
+          <p>
+            <a target="blank" href="https://wa.me/5491134010666">
+              +54-9-351-7303606
+            </a>
+          </p>
+        </h3>
+        <button onClick={listo}>Listo!</button>
+      </div>
+
+      <div className={pagado ? "oculto" : "visto"}>
         <Button
           onClick={handleButtonClick}
           disabled={items.length === 0}
@@ -146,7 +172,7 @@ const Summary = () => {
         >
           Pagar
         </Button>
-      )}
+      </div>
     </div>
   );
 };

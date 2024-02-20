@@ -8,6 +8,8 @@ import useCart from "@/hooks/use-cart";
 import Summary from "./components/summary";
 import CartItem from "./components/cart-item";
 
+import "./page.scss";
+
 export const revalidate = 0;
 
 const CartPage = () => {
@@ -24,8 +26,7 @@ const CartPage = () => {
 
   return (
     <>
-      {/* <Navbar logo={Logo} /> */}
-      <div className="bg-white">
+      <div className="bg-white carro">
         <Container>
           <div className="px-4 py-16 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold text-black">Carrito de compra</h1>

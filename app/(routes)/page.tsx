@@ -26,7 +26,6 @@ const HomePage = async () => {
       </Container>
       <Imagen1></Imagen1>
       <Nosotros />
-      <Contacto />
     </div>
   );
 };
