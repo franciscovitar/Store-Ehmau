@@ -1,79 +1,60 @@
 "use client";
 
 import axios from "axios";
-import { useEffect, useState, useMemo } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import { toast } from "react-hot-toast";
-
-import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 
 import "./summary.scss";
 
 const Summary = () => {
   const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);
-  const searchParams = useSearchParams();
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
-  // const [preferenceId, setPreferenceId] = useState(null);
-  // const memoizedSearchParams = useMemo(() => searchParams, [searchParams]);
-  // const memoizedRemoveAll = useMemo(() => removeAll, [removeAll]);
+  const [mail, setMail] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [codigoDescuento, setCodigoDescuento] = useState("");
+  const [descuento, setDescuento] = useState(1);
   const [pagado, setPagado] = useState(false);
 
-  // useEffect(() => {
-  //   if (searchParams.get("success")) {
-  //     toast.success("Pago completado.");
-  //     memoizedRemoveAll();
-  //   }
+  const codigo = ["FFGH", "FDSFDF", "FSADFSDSFD", "GFSDFG"];
 
-  //   if (searchParams.get("canceled")) {
-  //     toast.error("Algo salió mal.");
-  //   }
-  // }, [memoizedSearchParams, memoizedRemoveAll]);
+  const handlecodigoDescuentoChange = (event: any) => {
+    setCodigoDescuento(event.target.value);
+  };
+
+  const probarDescuento = () => {
+    if (codigo.includes(codigoDescuento)) {
+      setDescuento(0.75);
+      toast.success("Código exitoso");
+      setCodigoDescuento(" ");
+    } else {
+      setDescuento(1);
+      toast.success("Código erroneo");
+    }
+  };
+
+  const totalPrice = items.reduce((total, item) => {
+    return (total + Number(item.price)) * descuento;
+  }, 0);
 
   const handleDireccionChange = (event: any) => {
     setDireccion(event.target.value);
-    console.log("Direccion:", direccion);
   };
 
   const handleTelefonoChange = (event: any) => {
     const value = event.target.value as string; // Casting a string
     setTelefono(value.replace(/\D/g, ""));
   };
-
-  // initMercadoPago("TEST-66a50373-c6b4-4da8-af68-8ed9223c8a4d", {
-  //   locale: "es-AR",
-  // });
-
-  // const createPreference = async () => {
-  //   try {
-  //     const response = await axios.post(
-  //       `http://localhost:3042/create_preference`,
-  //       {
-  //         title: "Importa Madero",
-  //         quantity: 1,
-  //         price: Number(totalPrice),
-  //       }
-  //     );
-
-  //     const { id } = response.data;
-
-  //     return id;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // const handleBuy = async () => {
-  //   const id = await createPreference();
-
-  //   if (id) {
-  //     setPreferenceId(id);
-  //   }
-  // };
+  const handleMailChange = (event: any) => {
+    setMail(event.target.value);
+  };
+  const handleNombreChange = (event: any) => {
+    setNombre(event.target.value);
+  };
 
   const onCheckout = async () => {
     const response = await axios.post(
@@ -82,30 +63,35 @@ const Summary = () => {
         productIds: items.map((item) => item.id),
         direccion: direccion,
         telefono: telefono,
+        nombre: nombre,
+        mail: mail,
+        precioTotal: totalPrice.toLocaleString("es-AR", {
+          style: "currency",
+          currency: "ARS",
+          minimumFractionDigits: 0,
+        }),
       }
     );
 
     window.location = response.data.url;
   };
 
-  const totalPrice = items.reduce((total, item) => {
-    return total + Number(item.price);
-  }, 0);
-
   const handleButtonClick = () => {
-    if (!direccion || !telefono) {
-      toast.error("Por favor completa todos los campos requeridos.");
-      return;
-    }
-    onCheckout();
     setPagado(true);
   };
 
   const listo = () => {
+    if (!direccion || !telefono || !mail || !nombre) {
+      toast.error("Por favor completa todos los campos requeridos.");
+      return;
+    }
+    onCheckout();
     toast.success("Pago completado.");
     removeAll();
     setDireccion("");
     setTelefono("");
+    setNombre("");
+    setMail("");
     setPagado(false);
   };
 
@@ -118,7 +104,26 @@ const Summary = () => {
           <Currency value={totalPrice} />
         </div>
       </div>
-      <form className="pt-4 border-t border-gray-200">
+      <form
+        className={!pagado ? "visto pt-4 border-t border-gray-200" : "oculto"}
+      >
+        <label>
+          <p>Codigo de descuento:</p>
+        </label>
+        <div className="flex justify-between">
+          <input
+            placeholder="Ingresa un codigo"
+            type="text"
+            value={codigoDescuento}
+            onChange={handlecodigoDescuentoChange}
+          />
+          <Button onClick={probarDescuento}>Probar</Button>
+        </div>
+      </form>
+
+      <form
+        className={pagado ? "visto pt-4 border-t border-gray-200" : "oculto"}
+      >
         <label>
           <p>Direccion:</p>
         </label>
@@ -137,17 +142,25 @@ const Summary = () => {
           value={telefono}
           onChange={handleTelefonoChange}
         />
-      </form>
-      {/* {preferenceId ? (
-        <Wallet
-          initialization={{
-            preferenceId: preferenceId,
-            redirectMode: "blank",
-          }}
+        <label>
+          <p>Mail:</p>
+        </label>
+        <input
+          placeholder="Ingresa tu mail"
+          type="text"
+          value={mail}
+          onChange={handleMailChange}
         />
-      ) : (
-        
-      )} */}
+        <label>
+          <p>Nombre y Apellido:</p>
+        </label>
+        <input
+          placeholder="Ingresa tu nombre completo"
+          type="text"
+          value={nombre}
+          onChange={handleNombreChange}
+        />
+      </form>
 
       <div className={pagado ? "visto cvu" : "oculto"}>
         <h3>
