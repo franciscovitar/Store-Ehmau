@@ -9,6 +9,7 @@ import Summary from "./components/summary";
 import CartItem from "./components/cart-item";
 
 import "./page.scss";
+import CodigoDescuento from "./components/codigos-descuento";
 
 export const revalidate = 0;
 

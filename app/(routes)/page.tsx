@@ -6,6 +6,7 @@ import Imagen1 from "@/components/imagen1";
 import Nosotros from "@/components/nosotros";
 
 import "./page.scss";
+import CodigosDescuento from "./cart/components/codigos-descuento";
 
 export const revalidate = 0;
 
@@ -13,7 +14,7 @@ const HomePage = async () => {
   const products = await getProducts({});
 
   return (
-    <div className="">
+    <div>
       <Container>
         <div className="image-container  p-4 sm:p-6 lg:p-8 rounded-xl overflow-hidden">
           <div className="featured  rounded-xl relative aspect-square md:aspect-[2.4/1] overflow-hidden bg-cover">

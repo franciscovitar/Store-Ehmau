@@ -6,7 +6,7 @@ import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import { toast } from "react-hot-toast";
-
+import CodigoDescuento from "./codigos-descuento";
 import "./summary.scss";
 
 const Summary = () => {
@@ -19,21 +19,41 @@ const Summary = () => {
   const [codigoDescuento, setCodigoDescuento] = useState("");
   const [descuento, setDescuento] = useState(1);
   const [pagado, setPagado] = useState(false);
+  const [codigoAleatorio, setCodigoAleatorio] = useState("");
 
-  const codigo = ["FFGH", "FDSFDF", "FSADFSDSFD", "GFSDFG"];
+  const generarCodigoAleatorio = () => {
+    const longitud = 6;
+    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    let codigo = "";
+    for (let i = 0; i < longitud; i++) {
+      codigo += letras.charAt(Math.floor(Math.random() * letras.length));
+    }
+    setCodigoAleatorio(codigo);
+  };
 
   const handlecodigoDescuentoChange = (event: any) => {
     setCodigoDescuento(event.target.value);
   };
 
-  const probarDescuento = () => {
-    if (codigo.includes(codigoDescuento)) {
-      setDescuento(0.75);
-      toast.success("Código exitoso");
-      setCodigoDescuento(" ");
-    } else {
+  const probarDescuento = async () => {
+    const { codigosDescuento } = await CodigoDescuento();
+    const { porcentajeDescuento } = await CodigoDescuento();
+
+    let codigoEncontrado = false;
+
+    for (let i = 0; i < codigoDescuento.length; i++) {
+      if (codigosDescuento[i] === codigoDescuento) {
+        setDescuento(porcentajeDescuento[i]);
+        toast.success("Código exitoso");
+        setCodigoDescuento("");
+        codigoEncontrado = true;
+        break; // Salir del bucle
+      }
+    }
+
+    if (!codigoEncontrado) {
       setDescuento(1);
-      toast.success("Código erroneo");
+      toast.error("Código erróneo");
     }
   };
 
@@ -70,6 +90,8 @@ const Summary = () => {
           currency: "ARS",
           minimumFractionDigits: 0,
         }),
+        codigoAleatorio: codigoAleatorio,
+        descuento: "10",
       }
     );
 
@@ -77,6 +99,7 @@ const Summary = () => {
   };
 
   const handleButtonClick = () => {
+    generarCodigoAleatorio();
     setPagado(true);
   };
 
@@ -85,13 +108,14 @@ const Summary = () => {
       toast.error("Por favor completa todos los campos requeridos.");
       return;
     }
-    onCheckout();
+
     toast.success("Pago completado.");
     removeAll();
     setDireccion("");
     setTelefono("");
     setNombre("");
     setMail("");
+    onCheckout();
     setPagado(false);
   };
 

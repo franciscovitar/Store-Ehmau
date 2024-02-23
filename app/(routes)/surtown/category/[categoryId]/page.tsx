@@ -10,7 +10,7 @@ import getColors from "@/actions/get-colors";
 
 import Filter from "./components/filter";
 import MobileFilters from "./components/mobile-filters";
-import Navbar from "@/components/navbar";
+import getCodigos from "@/actions/get-codigos";
 
 export const revalidate = 0;
 
