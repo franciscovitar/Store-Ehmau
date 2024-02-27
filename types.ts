@@ -42,4 +42,11 @@ export interface Codigos {
   id: string;
   codigo: string;
   descuento: string;
+  usos: string;
+}
+
+export interface Envios {
+  id: string;
+  zona: string;
+  valor: string;
 }
