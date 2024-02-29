@@ -274,8 +274,9 @@ const Summary = () => {
           <Button onClick={probarDescuento}>Probar</Button>
         </div>
       </form>
+
       <form
-        className={pagado ? "visto mb-4 border-t border-gray-200" : "oculto"}
+        className={pagado ? "visto pt-4 border-t border-gray-200" : "oculto"}
       >
         <label>
           <p>Calcular Envio:</p>
@@ -285,18 +286,13 @@ const Summary = () => {
             <select value={zonaEnvio} onChange={handleZonaEnvio}>
               {opciones}
             </select>
-            <p className="ml-5 bg-black text-white p-4">
+            <p className="ml-5 bg-black text-white">
               ${valorEnvioInput != "" ? valorEnvioInput : "0"}
             </p>
           </div>
 
           <Button onClick={calcularEnvio}>Calcular</Button>
         </div>
-      </form>
-
-      <form
-        className={pagado ? "visto pt-4 border-t border-gray-200" : "oculto"}
-      >
         <label>
           <p>Direccion:</p>
         </label>
