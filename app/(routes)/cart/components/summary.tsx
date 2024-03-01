@@ -10,13 +10,14 @@ import emailjs from "@emailjs/browser";
 import CodigoDescuento from "./codigos-descuento";
 import "./summary.scss";
 import Envios from "./envios";
-import Seleccionar from "./seleccionar";
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 
 const Summary = () => {
   const items = useCart((state) => state.items);
   const removeAll = useCart((state) => state.removeAll);
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [preferenceId, setPreferenceId] = useState(null);
   const [mail, setMail] = useState("");
   const [nombre, setNombre] = useState("");
   const [codigoDescuento, setCodigoDescuento] = useState("");
@@ -30,6 +31,14 @@ const Summary = () => {
   const [zonaEnvio, setZonaEnvio] = useState("");
   const [opciones, setOpciones] = useState<JSX.Element[]>([]);
   const [envioCalculado, setEnvioCalculado] = useState(false);
+  const [ordenCompra, setOrdenCompra] = useState("");
+
+  // toast.success("Pago completado.");
+
+  // const getEstado = async () => {
+  //   const { estadoPago } = await Estado();
+  //   console.log(estadoPago);
+  // };
 
   useEffect(() => {
     const obtenerEnvios = async () => {
@@ -49,6 +58,47 @@ const Summary = () => {
 
     obtenerEnvios();
   }, []);
+
+  initMercadoPago("TEST-66a50373-c6b4-4da8-af68-8ed9223c8a4d", {
+    locale: "es-AR",
+  });
+
+  const createPreference = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/create_preference`,
+        {
+          title: "Importa Madero",
+          quantity: 1,
+          price: totalPrice,
+          ordenCompra: ordenCompra,
+        }
+      );
+
+      const { id } = response.data;
+      console.log(response);
+      return id;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleBuy = async () => {
+    if (!direccion || !telefono || !mail || !nombre) {
+      toast.error("Por favor completa todos los campos requeridos.");
+      return;
+    }
+    if (!envioCalculado) {
+      toast.error("Por favor calcula el precio de envio.");
+      return;
+    }
+
+    const id = await createPreference();
+
+    if (id) {
+      setPreferenceId(id);
+    }
+  };
 
   const handleZonaEnvio = (event: any) => {
     setZonaEnvio(event.target.value);
@@ -150,7 +200,7 @@ const Summary = () => {
     setNombre(event.target.value);
   };
 
-  const onCheckout = async (ordenCompra: any) => {
+  const onCheckout = async () => {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
       {
@@ -180,9 +230,11 @@ const Summary = () => {
   const handleButtonClick = () => {
     generarCodigoAleatorio();
     setPagado(true);
+    const nuevaOrdenCompra = generarOrdenCompra();
+    setOrdenCompra(nuevaOrdenCompra);
   };
 
-  const sendEmail = (ordenCompra: any) => {
+  const sendEmail = () => {
     // Crear un formulario temporal en el DOM
 
     const nombreProducto = nombresProductos();
@@ -204,15 +256,13 @@ const Summary = () => {
       <input type="hidden" name="mail" value="${mail}">
     `;
 
-    // Adjuntar el formulario al cuerpo del documento (para asegurar que los datos sean enviados)
     document.body.appendChild(form);
 
-    // Enviar el formulario usando emailjs
     emailjs
       .sendForm(
         "service_bdh41ue",
         "template_cqp6rdt",
-        form, // Pasar el formulario como tercer argumento
+        form,
         "_Xi61NPw_YghhsDhm"
       )
       .then(
@@ -224,28 +274,17 @@ const Summary = () => {
         }
       );
 
-    // Remover el formulario del DOM después de enviarlo
     document.body.removeChild(form);
   };
 
   const listo = () => {
-    if (!direccion || !telefono || !mail || !nombre) {
-      toast.error("Por favor completa todos los campos requeridos.");
-      return;
-    }
-    if (!envioCalculado) {
-      toast.error("Por favor calcula el precio de envio.");
-      return;
-    }
-    const ordenCompra = generarOrdenCompra();
-    sendEmail(ordenCompra);
-    toast.success("Pago completado.");
+    sendEmail();
     removeAll();
     setDireccion("");
     setTelefono("");
     setNombre("");
     setMail("");
-    onCheckout(ordenCompra);
+    onCheckout();
     setPagado(false);
   };
 
@@ -274,7 +313,6 @@ const Summary = () => {
           <Button onClick={probarDescuento}>Probar</Button>
         </div>
       </form>
-
       <form
         className={pagado ? "visto pt-4 border-t border-gray-200" : "oculto"}
       >
@@ -286,7 +324,7 @@ const Summary = () => {
             <select value={zonaEnvio} onChange={handleZonaEnvio}>
               {opciones}
             </select>
-            <p className="ml-5 bg-black text-white">
+            <p className="ml-5 bg-black text-white p-4">
               ${valorEnvioInput != "" ? valorEnvioInput : "0"}
             </p>
           </div>
@@ -329,25 +367,20 @@ const Summary = () => {
           value={nombre}
           onChange={handleNombreChange}
         />
+        {preferenceId ? (
+          <a onClick={listo}>
+            <Wallet
+              initialization={{
+                preferenceId: preferenceId,
+              }}
+            />
+          </a>
+        ) : (
+          <Button onClick={handleBuy} className=" mt-6">
+            Pagar
+          </Button>
+        )}
       </form>
-
-      <div className={pagado ? "visto cvu" : "oculto"}>
-        <h3>
-          Transferir a:<p>00700498-30004027410014</p>
-        </h3>
-        <h3>
-          Alias: <p> TIENDASURTOWN</p>
-        </h3>
-        <h3>
-          Enviar comprobante a:{" "}
-          <p>
-            <a target="blank" href="https://wa.me/5491134010666">
-              +54 9 11 3401-0666
-            </a>
-          </p>
-        </h3>
-        <button onClick={listo}>Listo!</button>
-      </div>
 
       <div className={pagado ? "oculto" : "visto"}>
         <Button
