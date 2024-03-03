@@ -7,8 +7,13 @@ import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
 import { Product } from "@/types";
 
+interface CartItemWithQuantity extends Product {
+  quantity: number;
+}
+
+// Definición de CartItemProps
 interface CartItemProps {
-  data: Product;
+  data: CartItemWithQuantity;
 }
 
 const CartItem: React.FC<CartItemProps> = ({ data }) => {
@@ -33,8 +38,12 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
           <IconButton onClick={onRemove} icon={<X size={15} />} />
         </div>
         <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
-          <div className="flex justify-between">
+          <div className="flex gap-10  items-center">
             <p className=" text-lg font-semibold text-black">{data.name}</p>
+            <p className=" text-lg font-semibold text-black">
+              Cantidad:{" "}
+              <span className="text-gray-700 font-normal">{data.quantity}</span>
+            </p>
           </div>
 
           <div className="mt-1 flex text-sm">

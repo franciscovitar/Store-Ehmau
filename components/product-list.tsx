@@ -11,11 +11,6 @@ interface ProductListProps {
   title: string;
   items: Product[];
 }
-const lineVariants = {
-  viewport: { once: true },
-  initial: { width: 5 },
-  whileInView: { width: 120, transition: { duration: 0.5 } },
-};
 
 const ProductList: React.FC<ProductListProps> = ({ title, items }) => {
   return (

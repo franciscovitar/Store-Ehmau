@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import Container from "@/components/ui/container";
 import useCart from "@/hooks/use-cart";
 
+import { Product } from "@/types";
+
 import Summary from "./components/summary";
 import CartItem from "./components/cart-item";
 
@@ -12,6 +14,10 @@ import "./page.scss";
 import CodigoDescuento from "./components/codigos-descuento";
 
 export const revalidate = 0;
+
+interface CartItemWithQuantity extends Product {
+  quantity: number;
+}
 
 const CartPage = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -39,7 +45,22 @@ const CartPage = () => {
                   </p>
                 )}
                 <ul>
-                  {cart.items.map((item) => (
+                  {/* {cart.items.map((item) => (
+                    <CartItem key={item.id} data={item} />
+                  ))} */}
+                  {Object.values(
+                    cart.items.reduce(
+                      (acc: Record<string, CartItemWithQuantity>, item) => {
+                        if (!acc[item.id]) {
+                          acc[item.id] = { ...item, quantity: 1 };
+                        } else {
+                          acc[item.id].quantity++;
+                        }
+                        return acc;
+                      },
+                      {}
+                    )
+                  ).map((item: CartItemWithQuantity) => (
                     <CartItem key={item.id} data={item} />
                   ))}
                 </ul>

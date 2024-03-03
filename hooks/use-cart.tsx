@@ -20,8 +20,20 @@ const useCart = create(
         const currentItems = get().items;
         const existingItem = currentItems.find((item) => item.id === data.id);
 
+        let itemsRepetidos = 0;
+
         if (existingItem) {
-          return toast("El item ya está en el carrito.");
+          itemsRepetidos = currentItems.filter(
+            (item) => item.id === data.id
+          ).length; // Contar cuántos items del mismo producto ya están en el carrito
+        }
+
+        const stock = parseInt(data.stock);
+
+        if (itemsRepetidos >= stock) {
+          return toast.error("No hay más stock.");
+        } else {
+          console.log(stock, itemsRepetidos);
         }
 
         set({ items: [...get().items, data] });

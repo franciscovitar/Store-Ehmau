@@ -33,13 +33,6 @@ const Summary = () => {
   const [envioCalculado, setEnvioCalculado] = useState(false);
   const [ordenCompra, setOrdenCompra] = useState("");
 
-  // toast.success("Pago completado.");
-
-  // const getEstado = async () => {
-  //   const { estadoPago } = await Estado();
-  //   console.log(estadoPago);
-  // };
-
   useEffect(() => {
     const obtenerEnvios = async () => {
       const { ZonaEnvio } = await Envios();
@@ -72,6 +65,7 @@ const Summary = () => {
           quantity: 1,
           price: totalPrice,
           ordenCompra: ordenCompra,
+          productIds: items.map((item) => item.id),
         }
       );
 
@@ -181,9 +175,11 @@ const Summary = () => {
     }
   };
 
-  const totalPrice = items.reduce((total, item) => {
-    return (parseInt(valorEnvioInput) + total + Number(item.price)) * descuento;
+  const casiTotalPrice = items.reduce((total, item) => {
+    return total + Number(item.price);
   }, 0);
+
+  const totalPrice = (parseInt(valorEnvioInput) + casiTotalPrice) * descuento;
 
   const handleDireccionChange = (event: any) => {
     setDireccion(event.target.value);
@@ -297,9 +293,7 @@ const Summary = () => {
           <Currency value={totalPrice} />
         </div>
       </div>
-      <form
-        className={!pagado ? "visto pt-4 border-t border-gray-200" : "oculto"}
-      >
+      <form className="visto pt-4 mb-3 border-t border-gray-200">
         <label>
           <p>Codigo de descuento:</p>
         </label>
@@ -314,7 +308,7 @@ const Summary = () => {
         </div>
       </form>
       <form
-        className={pagado ? "visto pt-4 border-t border-gray-200" : "oculto"}
+        className={pagado ? "visto pt-2 border-t border-gray-200" : "oculto"}
       >
         <label>
           <p>Calcular Envio:</p>
