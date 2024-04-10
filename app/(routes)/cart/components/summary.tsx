@@ -52,7 +52,7 @@ const Summary = () => {
     obtenerEnvios();
   }, []);
 
-  initMercadoPago("TEST-66a50373-c6b4-4da8-af68-8ed9223c8a4d", {
+  initMercadoPago("APP_USR-ffb4b24d-a759-4eb3-945d-f379ebc9abb1", {
     locale: "es-AR",
   });
 
