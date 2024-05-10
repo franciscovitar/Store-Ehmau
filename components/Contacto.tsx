@@ -41,7 +41,7 @@ function Contacto() {
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href="https://www.instagram.com/maderoimporta/"
+              href="https://www.instagram.com/surtowncommunity/"
             >
               <motion.i
                 viewport={{ once: true }}
