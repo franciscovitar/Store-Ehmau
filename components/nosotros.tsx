@@ -54,10 +54,11 @@ function Nosotros() {
           <motion.div className="line" {...lineVariants}></motion.div>
           <motion.p {...textVariants}>
             En nuestra tienda online de ropa, nos enfocamos en las personas que
-            aprecian la vida en un contexto natural y disfrutan de un "tiempo
-            sin tecnología" para conectar consigo mismos, amigos y la
-            naturaleza. Creemos que vivir sin la dependencia de los gadgets es
-            un verdadero placer y un lujo que todos deberíamos experimentar.
+            aprecian la vida en un contexto natural y disfrutan de un
+            &quot;tiempo sin tecnología&quot; para conectar consigo mismos,
+            amigos y la naturaleza. Creemos que vivir sin la dependencia de los
+            gadgets es un verdadero placer y un lujo que todos deberíamos
+            experimentar.
             <br />
             <br />
             Nuestros productos están pensados para quienes buscan un estilo de
