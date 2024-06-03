@@ -50,7 +50,7 @@ function Nosotros() {
           <Image alt="" src={Nos}></Image>
         </motion.div>
         <div className="texto">
-          <motion.h2 {...tittleVariants}>Acerca de mí</motion.h2>
+          <motion.h2 {...tittleVariants}>MOTTO</motion.h2>
           <motion.div className="line" {...lineVariants}></motion.div>
           <motion.p {...textVariants}>
             En nuestra tienda online de ropa, nos enfocamos en las personas que
