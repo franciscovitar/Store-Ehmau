@@ -53,13 +53,28 @@ function Nosotros() {
           <motion.h2 {...tittleVariants}>Acerca de mí</motion.h2>
           <motion.div className="line" {...lineVariants}></motion.div>
           <motion.p {...textVariants}>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt
-            pariatur, numquam debitis laudantium dignissimos quod perspiciatis
-            ducimus reprehenderit a labore voluptatum ullam blanditiis nemo
-            eveniet aspernatur omnis temporibus quasi et. Lorem ipsum dolor sit
-            amet, consectetur adipisicing elit. Nesciunt pariatur, numquam
-            debitis laudantium dignissimos quod perspiciatis ducimus
-            reprehenderit a.
+            En nuestra tienda online de ropa, nos enfocamos en las personas que
+            aprecian la vida en un contexto natural y disfrutan de un "tiempo
+            sin tecnología" para conectar consigo mismos, amigos y la
+            naturaleza. Creemos que vivir sin la dependencia de los gadgets es
+            un verdadero placer y un lujo que todos deberíamos experimentar.
+            <br />
+            <br />
+            Nuestros productos están pensados para quienes buscan un estilo de
+            vida auténtico, valoran la calidad y la sostenibilidad. Ya sea para
+            disfrutar en solitario de momentos de desconexión o compartir
+            experiencias con amigos y familiares en la naturaleza, nuestra
+            colección te invita a reencontrarte contigo mismo y tus seres
+            queridos.
+            <br />
+            <br />
+            En un mundo dominado por la tecnología, encontrar momentos para
+            disfrutar de la vida offline y conectar con lo que realmente importa
+            es un privilegio que queremos que todos puedan experimentar. Únete a
+            nuestra comunidad de amantes de la naturaleza y la vida sin
+            tecnología, descubre la belleza de compartir tiempo de calidad, ya
+            sea individualmente o en compañía de quienes más quieres. ¡Te damos
+            la bienvenida a nuestra tienda online de ropa!
           </motion.p>
         </div>
       </div>
